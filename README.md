@@ -18,6 +18,8 @@
   * Switch the color scale between absolute(SW3 ABS ON) and relative modes(SW3 ABS OFF).
   * In the relative mode, the color scale is calculated based on the overall maximum and minimum values.
   * For absolute mode, the color scale is calculated based on a minimum of 0 and a maximum of 1.4 m in high-resolution mode, or 5.7 m in normal mode.
+  * If horizontally flip the output image, please flash the `UVC_RP2040_XXXXXX_vXX_Mirror.uf2` file.
+  * In the code, enable `MIRRR_OUTPUT_MODE` in `UVC_RP2040.h`.
   * The frame rate depends on the conditions, but it is around 8 FPS.
   * 80° FOV, 1cm minimum distance and 0.25 mm resolution 
   * The maximum range of 11m is supported only at 8x8 resolution; this board does not support it.
