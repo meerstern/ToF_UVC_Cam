@@ -22,7 +22,8 @@
   * In the code, enable `MIRRR_OUTPUT_MODE` in `UVC_RP2040.h`.
   * If the confidence value is less than 10, it will be displayed in black. 
   * The frame rate depends on the conditions, but it is around 8 FPS.
-  * 80° FOV, 1cm minimum distance and 0.25 mm resolution 
+  * 80° FOV, 1cm minimum distance and 0.25 mm resolution
+  * Power 5V/0.2A from USB Type-C Port
   * The maximum range of 11m is supported only at 8x8 resolution; this board does not support it.
   * The board size is 40mm x50 mm, the hole size is M3x4, the hole pitch is 34mm x44mm. 
 
