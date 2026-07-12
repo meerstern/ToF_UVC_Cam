@@ -12,6 +12,7 @@
   * The USB port uses a Type-C connection.
   * The board is recognized as a UVC (USB Video Class) device with a resolution of 128x96.
   * The ToF resolution is 48x32 as a UVC webcam image.
+  * It is displayed scaled up by a factor of two(96x64).
   * Measuring up to 1.4 m in high-resolution mode(SW3 SEN ON)
   * Measuring up to 5.7 m in standard mode(SW3 SEN OFF)
   * Switch the color scale between absolute(SW3 ABS ON) and relative modes(SW3 ABS OFF).
