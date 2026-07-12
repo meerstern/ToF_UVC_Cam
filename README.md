@@ -24,7 +24,12 @@
   * 80° FOV, 1cm minimum distance and 0.25 mm resolution 
   * The maximum range of 11m is supported only at 8x8 resolution; this board does not support it.
   * The board size is 40mm x50 mm, the hole size is M3x4, the hole pitch is 34mm x44mm. 
-  
+
+## Laser eye safety
+The TMF8829 is designed to meet the Class 1 laser safety limits including single faults in
+compliance with IEC / EN 60825-1:2014, EN 60825-1:2014+A11:2021 and Class 1 consumer
+laser product according to EN 50689:2021.
+
 ## Updating the firmware
   * Connect the device to a PC (or similar) via USB Type-C.
   * Then press the RST button while holding down the BOOT button.
