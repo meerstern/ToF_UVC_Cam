@@ -13,6 +13,8 @@
 
 #define TMF8829_BIT2MM  (0.25f)
 
+//#define MIRRR_OUTPUT_MODE   1
+
 /* Communication Settings */
 
 #define F(x) x
