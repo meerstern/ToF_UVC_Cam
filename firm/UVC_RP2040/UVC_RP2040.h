@@ -14,6 +14,7 @@
 #define TMF8829_BIT2MM  (0.25f)
 
 //#define MIRRR_OUTPUT_MODE   1
+#define TOF_HEADER_VERSION  "ToF CAM v1.2"
 
 /* Communication Settings */
 

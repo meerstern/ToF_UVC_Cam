@@ -179,6 +179,18 @@ void makeInitGrid()
   }
 }
 
+void makeScaleGrid()
+{
+  uint16_t x,y;
+  for(y=0;y<TOF_PIX_HEIGHT;y++)
+  {
+    uint16_t x_pos = START_X_POS + CELL_SIZE*TOF_PIX_WIDTH+5;
+    uint16_t y_pos = START_Y_POS + CELL_SIZE*y;
+    uint16_t color = val2rgb565(2*START_Y_POS+CELL_SIZE*TOF_PIX_HEIGHT-y_pos, START_Y_POS, START_Y_POS+CELL_SIZE*TOF_PIX_HEIGHT);
+    UG_FillFrame(x_pos, y_pos, x_pos+4*CELL_SIZE, y_pos+CELL_SIZE, color);     
+  }
+}
+
 void updateGrid()
 {
     if(hasTofData)
@@ -219,13 +231,13 @@ void updateGrid()
           uint16_t maxVal = max_distance*TMF8829_BIT2MM/10;//mm to cm 
           memset(maxMinStr, '\0', sizeof(maxMinStr));
           snprintf(maxMinStr,sizeof(maxMinStr),"max= %03d cm    ",maxVal);
-          UG_SetForecolor(C_RED);
+          UG_SetForecolor(C_BLUE);
           UG_PutString(24,77,maxMinStr);
 
           uint16_t minVal = min_distance*TMF8829_BIT2MM/10;//mm to cm
           memset(maxMinStr, '\0', sizeof(maxMinStr));
           snprintf(maxMinStr,sizeof(maxMinStr),"min= %03d cm    ",minVal);
-          UG_SetForecolor(C_BLUE);
+          UG_SetForecolor(C_RED);
           UG_PutString(24,86,maxMinStr);
       }
 
@@ -250,14 +262,35 @@ void updateGrid()
         uint16_t confidence =  tofBuff[3*idx+2];
         uint16_t color = val2rgb565(distance, min_distance, max_distance);
         
+#ifdef MIRRR_OUTPUT_MODE
+        uint16_t x = TOF_PIX_WIDTH - 1 - (idx % TOF_PIX_WIDTH);
+#else
         uint16_t x = idx%TOF_PIX_WIDTH;
+#endif  
+
         uint16_t y = 2*(idx/TOF_PIX_WIDTH) + tofIndex;  //Data is interlace
         uint16_t x_pos = START_X_POS + CELL_SIZE*x;
         uint16_t y_pos = START_Y_POS + CELL_SIZE*y;
 
         static  uint16_t distance_buf[4];
         static  uint16_t confidence_buf[4];
-        
+
+#ifdef MIRRR_OUTPUT_MODE
+        if( x > 15 && x <20 ) //Some pix has bug, Skip Update in tofIndex == 0
+        {
+            if(y==2)
+            {
+              distance = distance_buf[x-16];
+              confidence = confidence_buf[x-16];
+              color = val2rgb565(distance, min_distance, max_distance);
+            }
+            else if(y==3)
+            {
+              distance_buf[x-16] = distance;
+              confidence_buf[x-16] = confidence;
+            }
+        }
+#else
         if( x > 27 && x <32 ) //Some pix has bug, Skip Update in tofIndex == 0
         {
             if(y==2)
@@ -272,6 +305,7 @@ void updateGrid()
               confidence_buf[x-28] = confidence;
             }
         }
+#endif
   
           
         if(confidence>10)
@@ -280,7 +314,6 @@ void updateGrid()
           UG_FillFrame(x_pos, y_pos, x_pos+CELL_SIZE, y_pos+CELL_SIZE, C_BLACK); 
           
       }
-
     }
 }
 
@@ -349,18 +382,17 @@ int main(void) {
 
   memset(guiBuff, 0, sizeof(guiBuff));
   UG_Init(&gui, pset, FRAME_WIDTH, FRAME_HEIGHT);
-  UG_FillScreen(C_WHITE);//C_BLUE);//C_WHITE
+  UG_FillScreen(C_WHITE);
   UG_SelectGUI(&gui);
   UG_FontSelect(&FONT_8X12);
   UG_SetForecolor(C_BLACK);
   UG_SetBackcolor(C_WHITE);
 
-  char head[] = "ToF CAM v1.1";
-  
+  char head[] = TOF_HEADER_VERSION;
   UG_PutString(12,1,head);
-
   UG_FontSelect(&FONT_6X10);
   makeInitGrid();
+  makeScaleGrid();
 
   // init device stack on configured roothub port
   tusb_rhport_init_t dev_init = {
